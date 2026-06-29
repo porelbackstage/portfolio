@@ -1,0 +1,1021 @@
+<!DOCTYPE html>
+<html lang="en" class="antialiased scroll-smooth selection:bg-orange-900/20 selection:text-orange-900">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alapan Porel | Strategic Systems Architect</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        serif: ['Instrument Serif', 'serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                    },
+                    colors: {
+                        brand: {
+                            50: '#fff7ed',
+                            100: '#ffedd5',
+                            500: '#f97316',
+                            800: '#9a3412',
+                            accent: '#c2410c' // Warm terracotta/orange accent
+                        },
+                        ui: {
+                            light: '#fdfbf7', // Warm off-white
+                            card: '#ffffff',
+                            border: '#e7e5e4', // Stone 200
+                            dark: '#1c1917', // Stone 900
+                            muted: '#78716c' // Stone 500
+                        }
+                    },
+                    animation: {
+                        'blob': 'blob 7s infinite',
+                        'fade-in': 'fadeIn 0.5s ease-out forwards',
+                        'slide-up': 'slideUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards',
+                    },
+                    keyframes: {
+                        blob: {
+                            '0%': { transform: 'translate(0px, 0px) scale(1)' },
+                            '33%': { transform: 'translate(30px, -50px) scale(1.1)' },
+                            '66%': { transform: 'translate(-20px, 20px) scale(0.9)' },
+                            '100%': { transform: 'translate(0px, 0px) scale(1)' },
+                        },
+                        fadeIn: {
+                            '0%': { opacity: '0' },
+                            '100%': { opacity: '1' },
+                        },
+                        slideUp: {
+                            '0%': { opacity: '0', transform: 'translateY(20px)' },
+                            '100%': { opacity: '1', transform: 'translateY(0)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background-color: #fdfbf7;
+            color: #1c1917;
+        }
+
+        /* Hide Scrollbar */
+        ::-webkit-scrollbar { width: 0px; background: transparent; }
+
+        /* Subtle Light Grid Backgrounds */
+        .bg-grid-light {
+            background-size: 40px 40px;
+            background-image: linear-gradient(to right, rgba(0, 0, 0, 0.03) 1px, transparent 1px),
+                              linear-gradient(to bottom, rgba(0, 0, 0, 0.03) 1px, transparent 1px);
+        }
+
+        /* Light-theme Spotlight Effect */
+        .spotlight-wrapper {
+            position: relative;
+        }
+        .spotlight-card {
+            background: rgba(255, 255, 255, 0.6);
+            border: 1px solid #e7e5e4;
+            border-radius: 1.5rem;
+            position: relative;
+            overflow: hidden;
+            backdrop-filter: blur(10px);
+            transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.02), 0 2px 4px -1px rgba(0, 0, 0, 0.02);
+        }
+        .spotlight-card:hover {
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.025);
+            border-color: #d6d3d1;
+        }
+        .spotlight-card::before {
+            content: "";
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            border-radius: inherit;
+            padding: 1px;
+            background: radial-gradient(600px circle at var(--mouse-x) var(--mouse-y), rgba(194, 65, 12, 0.15), transparent 40%);
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+            pointer-events: none;
+        }
+        .spotlight-wrapper:hover .spotlight-card::before { opacity: 1; }
+        
+        .glow-bg {
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: radial-gradient(500px circle at var(--mouse-x) var(--mouse-y), rgba(194, 65, 12, 0.03), transparent 40%);
+            opacity: 0;
+            transition: opacity 0.5s ease;
+            pointer-events: none;
+            z-index: -1;
+        }
+        .spotlight-wrapper:hover .glow-bg { opacity: 1; }
+
+        /* Step transitions */
+        .step { display: none; opacity: 0; transition: opacity 0.4s ease; }
+        .step.active { display: block; opacity: 1; }
+
+        /* MRI Bars */
+        .mri-bar-fill {
+            width: 0%;
+            transition: width 1.5s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+    </style>
+</head>
+<body class="relative">
+
+    <header class="fixed top-0 w-full z-50 bg-ui-light/80 backdrop-blur-md border-b border-ui-border transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6">
+            <div class="flex flex-col md:flex-row justify-between items-center py-4 gap-4 md:gap-0">
+                <!-- Logo / Identity -->
+                <div class="flex flex-col">
+                    <span class="font-mono text-xs font-bold tracking-widest uppercase text-ui-dark">Alapan Porel</span>
+                    <span class="font-mono text-[9px] tracking-widest uppercase text-ui-muted">Strategic Systems Architect</span>
+                </div>
+                
+                <!-- Navigation Links -->
+                <nav class="flex flex-wrap justify-center gap-x-6 gap-y-2 font-mono text-[10px] uppercase tracking-widest text-ui-muted">
+                    <a href="#identity" class="hover:text-brand-accent transition-colors">Identity</a>
+                    <a href="#stress-test" class="hover:text-brand-accent transition-colors">Stress Test</a>
+                    <a href="#transformations" class="hover:text-brand-accent transition-colors">Transformations</a>
+                    <a href="#philosophy" class="hover:text-brand-accent transition-colors">The Philosophy</a>
+                    <a href="#architect" class="hover:text-brand-accent transition-colors">The Architect</a>
+                </nav>
+
+                <!-- Actions -->
+                <div class="flex items-center gap-4">
+                    <a href="https://wa.me/919083919523" target="_blank" class="font-mono text-[10px] uppercase tracking-widest text-brand-accent hover:text-brand-800 transition-colors flex items-center gap-1">
+                        <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 24 24"><path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766 0 1.011.263 1.996.763 2.864l-1.007 3.676 3.757-.987c.84.455 1.785.694 2.753.694h.001c3.18 0 5.767-2.587 5.769-5.766.001-3.181-2.587-5.767-5.768-5.767zm3.177 8.016c-.174.492-.95.952-1.344 1.02-.34.059-.79.123-2.316-.511-1.841-.767-3.023-2.656-3.112-2.775-.088-.12-.742-.992-.742-1.892 0-.901.467-1.343.633-1.52.166-.176.363-.22.484-.22.12 0 .241.002.348.006.113.006.264-.043.407.303.149.36.505 1.233.55 1.326.044.093.075.201.015.32-.06.12-.09.193-.18.286-.09.093-.19.206-.27.288-.088.09-.181.188-.077.37.104.18.463.766.992 1.24.68.608 1.25.792 1.431.883.18.09.286.074.393-.047.106-.12.458-.535.58-.718.12-.183.243-.153.408-.092.166.06 1.05.496 1.23.587.18.09.3.136.345.213.045.077.045.45-.13.942zM12 2C6.477 2 2 6.477 2 12c0 1.763.46 3.473 1.332 4.974L2 22l5.148-1.312C8.618 21.55 10.285 22 12 22c5.523 0 10-4.477 10-10S17.523 2 12 2z"/></svg>
+                        WhatsApp Direct
+                    </a>
+                    <a href="#connect" class="px-4 py-2 bg-ui-dark text-ui-light font-mono text-[10px] uppercase tracking-widest rounded-full hover:bg-brand-accent transition-colors">Let's Connect</a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <section id="hero" class="h-screen w-full flex flex-col items-center justify-center relative overflow-hidden bg-grid-light pt-20">
+        <!-- Ambient Background -->
+        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-brand-100 rounded-full blur-[120px] mix-blend-multiply opacity-60 animate-blob pointer-events-none"></div>
+        
+        <div class="z-10 text-center space-y-10 max-w-4xl px-4">
+            <h1 class="font-serif text-5xl sm:text-7xl md:text-8xl text-ui-dark leading-[0.9] tracking-tight">
+                Run your company <br> <span class="italic text-ui-muted">through my brain.</span>
+            </h1>
+            
+            <button onclick="startDiagnostic()" class="group relative inline-flex items-center justify-center px-8 py-4 font-mono text-xs font-bold tracking-[0.2em] uppercase text-ui-dark overflow-hidden rounded-full border border-ui-border bg-white shadow-sm hover:shadow-md hover:border-brand-accent/30 transition-all duration-300">
+                <span class="relative z-10 flex items-center gap-2">
+                    Initialize Diagnostic 
+                    <svg class="w-4 h-4 group-hover:translate-x-1 transition-transform text-brand-accent" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+                </span>
+            </button>
+        </div>
+    </section>
+
+    <section id="diagnostic-engine" class="fixed inset-0 z-[100] bg-ui-light hidden flex-col items-center justify-center p-4 sm:p-8">
+        <div class="absolute inset-0 bg-grid-light opacity-50"></div>
+        <div class="w-full max-w-2xl relative z-10">
+            
+            <!-- Question 1 -->
+            <div id="step-1" class="step active space-y-8">
+                <p class="font-mono text-xs tracking-widest text-brand-accent mb-4 uppercase">Q1 / 03 — Current State</p>
+                <h2 class="text-3xl sm:text-4xl font-light text-ui-dark tracking-tight">Where does the system hurt the most?</h2>
+                <div class="grid grid-cols-1 gap-3">
+                    <button onclick="nextStep(2)" class="text-left p-6 rounded-2xl bg-white border border-ui-border hover:border-brand-accent hover:shadow-md transition-all text-ui-muted hover:text-ui-dark font-medium">Every decision requires founder approval.</button>
+                    <button onclick="nextStep(2)" class="text-left p-6 rounded-2xl bg-white border border-ui-border hover:border-brand-accent hover:shadow-md transition-all text-ui-muted hover:text-ui-dark font-medium">Departments are fighting over who owns what.</button>
+                    <button onclick="nextStep(2)" class="text-left p-6 rounded-2xl bg-white border border-ui-border hover:border-brand-accent hover:shadow-md transition-all text-ui-muted hover:text-ui-dark font-medium">Adding more people is making us slower.</button>
+                </div>
+            </div>
+
+            <!-- Question 2 -->
+            <div id="step-2" class="step space-y-8">
+                <p class="font-mono text-xs tracking-widest text-brand-accent mb-4 uppercase">Q2 / 03 — Scalability</p>
+                <h2 class="text-3xl sm:text-4xl font-light text-ui-dark tracking-tight">What happens if an API fails or a crisis hits?</h2>
+                <div class="grid grid-cols-1 gap-3">
+                    <button onclick="nextStep(3)" class="text-left p-6 rounded-2xl bg-white border border-ui-border hover:border-brand-accent hover:shadow-md transition-all text-ui-muted hover:text-ui-dark font-medium">Teams panic and wait for leadership directions.</button>
+                    <button onclick="nextStep(3)" class="text-left p-6 rounded-2xl bg-white border border-ui-border hover:border-brand-accent hover:shadow-md transition-all text-ui-muted hover:text-ui-dark font-medium">Systems break because of unwritten assumptions.</button>
+                    <button onclick="nextStep(3)" class="text-left p-6 rounded-2xl bg-white border border-ui-border hover:border-brand-accent hover:shadow-md transition-all text-ui-muted hover:text-ui-dark font-medium">We manually intervene to stop the bleeding.</button>
+                </div>
+            </div>
+
+            <!-- Question 3 -->
+            <div id="step-3" class="step space-y-8">
+                <p class="font-mono text-xs tracking-widest text-brand-accent mb-4 uppercase">Q3 / 03 — Knowledge Base</p>
+                <h2 class="text-3xl sm:text-4xl font-light text-ui-dark tracking-tight">Where does critical operational logic live?</h2>
+                <div class="grid grid-cols-1 gap-3">
+                    <button onclick="runMRI()" class="text-left p-6 rounded-2xl bg-white border border-ui-border hover:border-brand-accent hover:shadow-md transition-all text-ui-muted hover:text-ui-dark font-medium">Inside the heads of my best early employees.</button>
+                    <button onclick="runMRI()" class="text-left p-6 rounded-2xl bg-white border border-ui-border hover:border-brand-accent hover:shadow-md transition-all text-ui-muted hover:text-ui-dark font-medium">Scattered across 40 different Notion docs.</button>
+                    <button onclick="runMRI()" class="text-left p-6 rounded-2xl bg-white border border-ui-border hover:border-brand-accent hover:shadow-md transition-all text-ui-muted hover:text-ui-dark font-medium">Honestly? I'm not entirely sure anymore.</button>
+                </div>
+            </div>
+
+            <!-- Loading -->
+            <div id="step-loading" class="step text-center space-y-6 py-20">
+                <div class="w-12 h-12 border-2 border-ui-border border-t-brand-accent rounded-full animate-spin mx-auto"></div>
+                <p class="font-mono text-xs tracking-widest text-ui-muted uppercase animate-pulse">Running Structural MRI...</p>
+            </div>
+
+            <!-- MRI Result -->
+            <div id="step-mri" class="step">
+                <div class="flex justify-between items-end mb-8">
+                    <div>
+                        <p class="font-mono text-[10px] tracking-widest text-red-600 mb-2 uppercase font-bold">Diagnosis Complete</p>
+                        <h2 class="text-3xl font-serif text-ui-dark">Founder Dependency Syndrome</h2>
+                    </div>
+                    <div class="text-right">
+                        <p class="font-mono text-[10px] tracking-widest text-ui-muted uppercase">System Fragility</p>
+                        <p class="text-3xl font-mono text-ui-dark">78%</p>
+                    </div>
+                </div>
+
+                <!-- Bars -->
+                <div class="space-y-6 bg-white p-8 rounded-3xl border border-ui-border shadow-sm">
+                    
+                    <div class="space-y-2">
+                        <div class="flex justify-between font-mono text-[10px] uppercase tracking-wider">
+                            <span class="text-ui-muted">Workflow Automation</span>
+                            <span class="text-brand-accent">34%</span>
+                        </div>
+                        <div class="h-1.5 w-full bg-stone-100 rounded-full overflow-hidden">
+                            <div class="mri-bar-fill h-full bg-brand-accent rounded-full" data-width="34%"></div>
+                        </div>
+                    </div>
+
+                    <div class="space-y-2">
+                        <div class="flex justify-between font-mono text-[10px] uppercase tracking-wider">
+                            <span class="text-ui-muted">Decision Ownership Matrix</span>
+                            <span class="text-red-500">12%</span>
+                        </div>
+                        <div class="h-1.5 w-full bg-stone-100 rounded-full overflow-hidden">
+                            <div class="mri-bar-fill h-full bg-red-500 rounded-full" data-width="12%"></div>
+                        </div>
+                    </div>
+
+                    <div class="space-y-2">
+                        <div class="flex justify-between font-mono text-[10px] uppercase tracking-wider">
+                            <span class="text-ui-muted">Cross-Functional Alignment</span>
+                            <span class="text-emerald-600">42%</span>
+                        </div>
+                        <div class="h-1.5 w-full bg-stone-100 rounded-full overflow-hidden">
+                            <div class="mri-bar-fill h-full bg-emerald-500 rounded-full" data-width="42%"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-8 p-6 border border-brand-accent/20 bg-brand-50 rounded-2xl">
+                    <p class="font-mono text-[10px] tracking-widest text-brand-accent mb-2 uppercase font-bold">Root Cause</p>
+                    <p class="text-sm text-ui-dark leading-relaxed">Growth broke your human-centric systems. The organization scales by adding people, but workflows haven't been architected to distribute decision-making. You need an operating model redesign.</p>
+                </div>
+
+                <button onclick="closeDiagnostic()" class="w-full mt-8 py-4 font-mono text-[10px] font-bold tracking-[0.2em] uppercase text-ui-muted hover:text-brand-accent transition-colors">
+                    Review Interventions ↓
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <main id="main-content" class="relative z-20">
+        
+        <!-- SECTION: Identity / The Genesis Story -->
+        <section id="identity" class="py-32 px-4 sm:px-8 border-b border-ui-border relative bg-white">
+            <div class="max-w-6xl mx-auto">
+                <div class="text-center mb-20">
+                    <p class="font-mono text-[10px] tracking-[0.3em] text-brand-accent uppercase mb-4">The Genesis Story</p>
+                    <h2 class="text-4xl sm:text-5xl font-serif text-ui-dark leading-tight max-w-3xl mx-auto">
+                        Where Systemic Precision Meets Real-World Struggle
+                    </h2>
+                    <p class="mt-8 text-ui-muted max-w-2xl mx-auto text-lg italic">
+                        "Different industries do not have different organizational problems. They simply have different versions of the same systemic failures."
+                    </p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <!-- Pillar 1 -->
+                    <div class="spotlight-wrapper">
+                        <div class="spotlight-card h-full p-8">
+                            <div class="glow-bg"></div>
+                            <div class="text-3xl mb-4">🌾</div>
+                            <h3 class="font-mono text-xs tracking-widest text-ui-dark uppercase mb-2 font-bold">A Rural Upbringing</h3>
+                            <p class="font-mono text-[9px] text-brand-accent uppercase mb-4">Constraints Force Original Thinking</p>
+                            <p class="text-sm text-ui-muted leading-relaxed">
+                                Growing up with bounded resources quickly clarifies a truth: optimization is not a luxurious business strategy. It is a baseline necessity. When materials are finite, you program absolute clarity into every action.
+                            </p>
+                        </div>
+                    </div>
+                    
+                    <!-- Pillar 2 -->
+                    <div class="spotlight-wrapper">
+                        <div class="spotlight-card h-full p-8">
+                            <div class="glow-bg"></div>
+                            <div class="text-3xl mb-4">📜</div>
+                            <h3 class="font-mono text-xs tracking-widest text-ui-dark uppercase mb-2 font-bold">The Legal Blueprint</h3>
+                            <p class="font-mono text-[9px] text-brand-accent uppercase mb-4">Institutional Rules & Logical Coding</p>
+                            <p class="text-sm text-ui-muted leading-relaxed">
+                                WBNUJS refined my operational reasoning. Contracts are not dry pages; they are operating parameters written in English syntax. I design system logic, interface thresholds, and governance pathways with identical architectural severity.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Pillar 3 -->
+                    <div class="spotlight-wrapper">
+                        <div class="spotlight-card h-full p-8">
+                            <div class="glow-bg"></div>
+                            <div class="text-3xl mb-4">🚀</div>
+                            <h3 class="font-mono text-xs tracking-widest text-ui-dark uppercase mb-2 font-bold">The Startup Crucible</h3>
+                            <p class="font-mono text-[9px] text-brand-accent uppercase mb-4">Where Survival Trumps Process</p>
+                            <p class="text-sm text-ui-muted leading-relaxed">
+                                Pitching startups and directing core workflows taught me that strategic slide decks are completely useless unless they can directly survive messy execution. I bridge complex vision and immediate reality.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="alignment" class="py-32 px-4 sm:px-8 border-b border-ui-border bg-ui-light relative overflow-hidden">
+            <div class="absolute inset-0 bg-grid-light opacity-50"></div>
+            <div class="max-w-5xl mx-auto relative z-10">
+                <div class="mb-16">
+                    <p class="font-mono text-[10px] tracking-[0.3em] text-brand-accent uppercase mb-4">The Alignment Matrix</p>
+                    <h2 class="text-3xl sm:text-4xl font-light text-ui-dark mb-6">The Cross-Disciplinary Translation Layer</h2>
+                    <p class="text-ui-muted max-w-2xl leading-relaxed">
+                        Scaling problems do not obey department boundaries. When developers can't ship, when clinical workflows break down, or when financial allocations leak, the failure point is almost always found in the undocumented handoffs *between* these departments.
+                    </p>
+                    <blockquote class="mt-6 border-l-2 border-brand-accent pl-4 text-ui-dark italic font-medium">
+                        "I operate as the structural bridge. I align founder business metrics directly into detailed, execution-ready system logic that engineers can deploy without losing key business context."
+                    </blockquote>
+                </div>
+
+                <!-- Interactive Tabs -->
+                <div class="bg-white rounded-3xl border border-ui-border shadow-sm overflow-hidden">
+                    <div class="border-b border-ui-border p-4 sm:p-6 bg-stone-50">
+                        <p class="font-mono text-[10px] tracking-widest text-ui-muted uppercase mb-4">Select a Domain to Inspect Translation Logic</p>
+                        <div class="flex flex-wrap gap-2 sm:gap-4">
+                            <button onclick="switchTab('business')" id="tab-business" class="tab-btn px-4 py-2 rounded-full font-mono text-xs uppercase tracking-wider bg-ui-dark text-white transition-all">Business</button>
+                            <button onclick="switchTab('operations')" id="tab-operations" class="tab-btn px-4 py-2 rounded-full font-mono text-xs uppercase tracking-wider border border-ui-border text-ui-muted hover:bg-stone-100 transition-all">Operations</button>
+                            <button onclick="switchTab('engineering')" id="tab-engineering" class="tab-btn px-4 py-2 rounded-full font-mono text-xs uppercase tracking-wider border border-ui-border text-ui-muted hover:bg-stone-100 transition-all">Engineering</button>
+                            <button onclick="switchTab('finance')" id="tab-finance" class="tab-btn px-4 py-2 rounded-full font-mono text-xs uppercase tracking-wider border border-ui-border text-ui-muted hover:bg-stone-100 transition-all">Finance</button>
+                            <button onclick="switchTab('law')" id="tab-law" class="tab-btn px-4 py-2 rounded-full font-mono text-xs uppercase tracking-wider border border-ui-border text-ui-muted hover:bg-stone-100 transition-all">Law</button>
+                        </div>
+                    </div>
+                    
+                    <div class="p-8 sm:p-12 min-h-[250px] flex items-center">
+                        <!-- Dynamic Content Area -->
+                        <div id="tab-content" class="animate-fade-in w-full">
+                            <div class="text-4xl mb-4">💼</div>
+                            <h3 class="font-mono text-sm tracking-widest text-brand-accent uppercase mb-4 font-bold">BUSINESS INCENTIVES</h3>
+                            <p class="text-ui-dark leading-relaxed max-w-2xl mb-6">
+                                Managing scale, operational cost indexes, and long-term capital efficiency structures. I translate core revenue blueprints into systemic workflows that don't depend on individual heroics.
+                            </p>
+                            <div class="inline-flex items-center gap-3 px-4 py-2 rounded bg-stone-100 border border-ui-border font-mono text-[10px] uppercase tracking-widest text-ui-dark">
+                                <span>Blueprint</span>
+                                <svg class="w-3 h-3 text-brand-accent" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+                                <span>Strategy</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="philosophy" class="py-32 px-4 sm:px-8 border-b border-ui-border bg-white">
+            <div class="max-w-6xl mx-auto">
+                <div class="text-center mb-20">
+                    <p class="font-mono text-[10px] tracking-[0.3em] text-brand-accent uppercase mb-4">The Philosophy</p>
+                    <h2 class="text-3xl sm:text-4xl md:text-5xl font-serif text-ui-dark leading-tight max-w-3xl mx-auto mb-6">
+                        The five organizational failures I solve better than almost anyone.
+                    </h2>
+                    <p class="text-ui-muted text-lg max-w-2xl mx-auto">
+                        I do not write code. I do not run ad campaigns. I translate messy, ambiguous human coordination problems into strict, scalable architectural logic.
+                    </p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <!-- Failure 1 -->
+                    <div class="spotlight-wrapper">
+                        <div class="spotlight-card h-full p-8 border-t-4 border-t-brand-accent">
+                            <div class="font-mono text-3xl text-stone-300 font-bold mb-4">01</div>
+                            <h3 class="text-xl font-bold text-ui-dark mb-3">Founder Bottlenecks</h3>
+                            <p class="text-sm text-ui-muted leading-relaxed">
+                                Transitioning companies from "hub-and-spoke" models where every decision relies on the founder's intuition, to deterministic engines governed by explicit rules.
+                            </p>
+                        </div>
+                    </div>
+                    <!-- Failure 2 -->
+                    <div class="spotlight-wrapper">
+                        <div class="spotlight-card h-full p-8 border-t-4 border-t-brand-accent">
+                            <div class="font-mono text-3xl text-stone-300 font-bold mb-4">02</div>
+                            <h3 class="text-xl font-bold text-ui-dark mb-3">Cross-Functional Misalignment</h3>
+                            <p class="text-sm text-ui-muted leading-relaxed">
+                                Eliminating "Cognitive Drift" between Engineering, Product, and Operations by establishing shared taxonomy and indisputable single sources of truth.
+                            </p>
+                        </div>
+                    </div>
+                    <!-- Failure 3 -->
+                    <div class="spotlight-wrapper">
+                        <div class="spotlight-card h-full p-8 border-t-4 border-t-brand-accent">
+                            <div class="font-mono text-3xl text-stone-300 font-bold mb-4">03</div>
+                            <h3 class="text-xl font-bold text-ui-dark mb-3">Workflow & Governance</h3>
+                            <p class="text-sm text-ui-muted leading-relaxed">
+                                Embedding legal, financial, and compliance parameters directly into the digital workflow, ensuring speed does not compromise systemic safety.
+                            </p>
+                        </div>
+                    </div>
+                    <!-- Failure 4 -->
+                    <div class="spotlight-wrapper">
+                        <div class="spotlight-card h-full p-8 border-t-4 border-t-brand-accent">
+                            <div class="font-mono text-3xl text-stone-300 font-bold mb-4">04</div>
+                            <h3 class="text-xl font-bold text-ui-dark mb-3">Decisions Under Uncertainty</h3>
+                            <p class="text-sm text-ui-muted leading-relaxed">
+                                Writing "fail-safes". Designing exact procedural routing for when systems face unpredictable external shocks (e.g., API failures, market crashes, physical crises).
+                            </p>
+                        </div>
+                    </div>
+                    <!-- Failure 5 -->
+                    <div class="spotlight-wrapper md:col-span-2 lg:col-span-1">
+                        <div class="spotlight-card h-full p-8 border-t-4 border-t-brand-accent">
+                            <div class="font-mono text-3xl text-stone-300 font-bold mb-4">05</div>
+                            <h3 class="text-xl font-bold text-ui-dark mb-3">Scaling Without Complexity</h3>
+                            <p class="text-sm text-ui-muted leading-relaxed">
+                                Defeating the "Complexity Tax". Structuring onboarding, task execution, and data architecture so adding headcount actually increases leverage instead of management overhead.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="transformations" class="py-32 px-4 sm:px-8 border-b border-ui-border bg-ui-light">
+            <div class="max-w-6xl mx-auto">
+                <div class="text-center mb-16">
+                    <p class="font-mono text-[10px] tracking-[0.3em] text-brand-accent uppercase mb-4">Operating System Playground</p>
+                    <h2 class="text-3xl sm:text-4xl font-light text-ui-dark mb-4">Proving the Framework Visually</h2>
+                    <p class="text-ui-muted max-w-xl mx-auto">Words describe structure. Visuals prove it. Watch what happens when we intervene on a typical fragile organizational structure.</p>
+                </div>
+
+                <div class="bg-white rounded-3xl p-8 sm:p-12 border border-ui-border shadow-md relative overflow-hidden">
+                    <div class="absolute inset-0 bg-grid-light opacity-30 pointer-events-none"></div>
+                    
+                    <!-- Toggle -->
+                    <div class="relative z-10 flex justify-center mb-16">
+                        <div class="bg-stone-100 p-1 rounded-full border border-ui-border flex items-center shadow-inner">
+                            <button onclick="toggleStructure('before')" id="btn-before" class="px-6 py-2 rounded-full text-xs font-mono uppercase tracking-widest bg-ui-dark text-white transition-all shadow-md">Reset to Mess</button>
+                            <button onclick="toggleStructure('after')" id="btn-after" class="px-6 py-2 rounded-full text-xs font-mono uppercase tracking-widest text-ui-muted hover:text-ui-dark transition-all">System Stabilized</button>
+                        </div>
+                    </div>
+
+                    <!-- Visual Area -->
+                    <div class="relative h-[400px] w-full max-w-2xl mx-auto flex items-center justify-center">
+                        
+                        <!-- BEFORE STATE -->
+                        <div id="state-before" class="absolute inset-0 transition-opacity duration-700 opacity-100 flex items-center justify-center">
+                            <!-- SVG Chaos Lines -->
+                            <svg class="absolute inset-0 w-full h-full pointer-events-none stroke-stone-300 stroke-[1.5px]">
+                                <line x1="50%" y1="50%" x2="20%" y2="20%" />
+                                <line x1="50%" y1="50%" x2="80%" y2="20%" />
+                                <line x1="50%" y1="50%" x2="20%" y2="80%" />
+                                <line x1="50%" y1="50%" x2="80%" y2="80%" />
+                                <line x1="20%" y1="20%" x2="80%" y2="20%" />
+                                <line x1="20%" y1="20%" x2="20%" y2="80%" />
+                                <line x1="80%" y1="20%" x2="80%" y2="80%" />
+                                <line x1="20%" y1="80%" x2="80%" y2="20%" />
+                            </svg>
+                            <!-- Nodes -->
+                            <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-16 h-16 rounded-full bg-red-100 border border-red-500 flex items-center justify-center text-[10px] font-mono text-red-700 z-10 shadow-sm animate-pulse font-bold">FOUNDER</div>
+                            <div class="absolute top-[20%] left-[20%] -translate-x-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-white border border-ui-border flex items-center justify-center text-[9px] font-mono text-ui-dark shadow-sm">SALES</div>
+                            <div class="absolute top-[20%] left-[80%] -translate-x-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-white border border-ui-border flex items-center justify-center text-[9px] font-mono text-ui-dark shadow-sm">PROD</div>
+                            <div class="absolute top-[80%] left-[20%] -translate-x-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-white border border-ui-border flex items-center justify-center text-[9px] font-mono text-ui-dark shadow-sm">OPS</div>
+                            <div class="absolute top-[80%] left-[80%] -translate-x-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-white border border-ui-border flex items-center justify-center text-[9px] font-mono text-ui-dark shadow-sm">ENG</div>
+                            
+                            <div class="absolute bottom-0 text-center w-full pb-4">
+                                <p class="text-sm font-mono text-red-600 font-bold uppercase tracking-widest">Current State</p>
+                            </div>
+                        </div>
+
+                        <!-- AFTER STATE -->
+                        <div id="state-after" class="absolute inset-0 transition-opacity duration-700 opacity-0 flex items-center justify-center">
+                            <!-- SVG Order Lines -->
+                            <svg class="absolute inset-0 w-full h-full pointer-events-none stroke-emerald-500/50 stroke-[2px]">
+                                <line x1="50%" y1="30%" x2="20%" y2="70%" />
+                                <line x1="50%" y1="30%" x2="40%" y2="70%" />
+                                <line x1="50%" y1="30%" x2="60%" y2="70%" />
+                                <line x1="50%" y1="30%" x2="80%" y2="70%" />
+                                <line x1="20%" y1="70%" x2="40%" y2="70%" stroke-dasharray="4" />
+                                <line x1="40%" y1="70%" x2="60%" y2="70%" stroke-dasharray="4" />
+                                <line x1="60%" y1="70%" x2="80%" y2="70%" stroke-dasharray="4" />
+                            </svg>
+                            <!-- Nodes -->
+                            <div class="absolute top-[30%] left-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-14 rounded-lg bg-emerald-50 border-2 border-emerald-500 flex items-center justify-center text-[10px] font-mono text-emerald-800 z-10 shadow-[0_4px_15px_rgba(16,185,129,0.2)] font-bold">
+                                RULES & AUTOMATED GOVERNANCE LAYER ACTIVE
+                            </div>
+                            <div class="absolute top-[70%] left-[20%] -translate-x-1/2 -translate-y-1/2 w-16 h-12 rounded-lg border border-ui-border bg-white shadow-sm flex flex-col items-center justify-center">
+                                <span class="text-[9px] font-mono text-ui-dark">Sales</span>
+                            </div>
+                            <div class="absolute top-[70%] left-[40%] -translate-x-1/2 -translate-y-1/2 w-16 h-12 rounded-lg border border-ui-border bg-white shadow-sm flex flex-col items-center justify-center">
+                                <span class="text-[9px] font-mono text-ui-dark">Product</span>
+                            </div>
+                            <div class="absolute top-[70%] left-[60%] -translate-x-1/2 -translate-y-1/2 w-16 h-12 rounded-lg border border-ui-border bg-white shadow-sm flex flex-col items-center justify-center">
+                                <span class="text-[9px] font-mono text-ui-dark">Eng</span>
+                            </div>
+                            <div class="absolute top-[70%] left-[80%] -translate-x-1/2 -translate-y-1/2 w-16 h-12 rounded-lg border border-ui-border bg-white shadow-sm flex flex-col items-center justify-center">
+                                <span class="text-[9px] font-mono text-ui-dark">Ops</span>
+                            </div>
+                            
+                            <div class="absolute bottom-0 text-center w-full pb-4 flex flex-col items-center">
+                                <p class="text-sm font-mono text-emerald-700 font-bold uppercase tracking-widest mb-1">Distributed Governance (Resilient)</p>
+                                <p class="text-xs font-mono text-emerald-600 bg-emerald-100 px-3 py-1 rounded-full">Bottleneck Reduction 85%</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="py-32 px-4 sm:px-8 border-b border-ui-border overflow-hidden relative bg-white">
+            <div class="max-w-5xl mx-auto flex flex-col md:flex-row items-center justify-between gap-12">
+                
+                <div class="w-full md:w-1/2 space-y-6">
+                    <p class="font-mono text-[10px] tracking-widest text-brand-accent uppercase font-bold">Thought Experiment</p>
+                    <h3 class="text-4xl font-serif text-ui-dark">The Complexity Tax</h3>
+                    <p class="text-ui-muted leading-relaxed">
+                        Why does adding headcount slow down execution? Without strict governance APIs between teams, communication paths grow exponentially <span class="font-mono text-xs bg-stone-100 px-1 rounded text-ui-dark">(N(N-1)/2)</span>. 
+                    </p>
+                    <div class="pt-6 bg-stone-50 p-6 rounded-2xl border border-ui-border">
+                        <label class="font-mono text-xs text-ui-muted flex justify-between mb-4">
+                            <span>Team Size: <span id="node-count-display" class="text-ui-dark font-bold">4</span></span>
+                            <span>Communication Paths: <span id="path-count-display" class="text-ui-dark font-bold">6</span></span>
+                        </label>
+                        <input type="range" id="node-slider" min="3" max="15" value="4" class="w-full accent-brand-accent h-2 bg-stone-200 rounded-full appearance-none outline-none">
+                    </div>
+                </div>
+
+                <!-- Fixed Container for SVG Graphics Alignment -->
+                <div class="w-full md:w-1/2 max-w-[400px] aspect-square relative rounded-3xl border border-ui-border bg-stone-50 flex items-center justify-center p-8 shadow-inner overflow-hidden">
+                    <div class="w-full h-full relative" id="network-container">
+                        <svg id="network-viz" class="absolute inset-0 w-full h-full stroke-stone-300 stroke-[1.5px]"></svg>
+                        <div id="nodes-container" class="absolute inset-0 pointer-events-none"></div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <section class="py-32 px-4 sm:px-8 border-b border-ui-border bg-ui-light">
+            <div class="max-w-5xl mx-auto">
+                <div class="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6">
+                    <div>
+                        <p class="font-mono text-[10px] tracking-[0.3em] text-brand-accent uppercase mb-4">Pattern Library</p>
+                        <h2 class="text-3xl sm:text-4xl font-light text-ui-dark">Organizational Diseases</h2>
+                    </div>
+                    <p class="text-ui-muted max-w-sm text-sm">
+                        I don't just list past projects. I catalog structural pathologies. Different domains—Healthcare, FinTech, Logistics—experience the exact same failure modes.
+                    </p>
+                </div>
+
+                <div class="space-y-8">
+                    <!-- Pattern 1 -->
+                    <div class="bg-white border border-ui-border p-8 rounded-3xl shadow-sm hover:shadow-md transition-shadow relative overflow-hidden">
+                        <div class="absolute top-0 left-0 w-2 h-full bg-brand-accent"></div>
+                        <div class="flex flex-col lg:flex-row gap-8">
+                            <div class="lg:w-1/3">
+                                <span class="font-mono text-[10px] text-ui-muted uppercase tracking-widest block mb-2">Pattern #01</span>
+                                <h3 class="text-2xl font-serif text-ui-dark mb-4">The Groundhog Day Loop</h3>
+                                <p class="text-xs text-emerald-700 bg-emerald-50 inline-block px-3 py-1 rounded-full border border-emerald-200 mt-4">*Successfully applied in MedTech therapy allocation (reduced manual friction by 40%).</p>
+                            </div>
+                            <div class="lg:w-2/3 space-y-6">
+                                <div>
+                                    <h4 class="font-mono text-xs uppercase tracking-widest text-ui-dark font-bold mb-2 flex items-center gap-2"><span class="text-brand-accent">↓</span> Symptoms</h4>
+                                    <ul class="list-disc list-inside text-sm text-ui-muted space-y-1 ml-4">
+                                        <li>Leadership meetings re-discussing the same operational blockages monthly.</li>
+                                        <li>High error rates in standard, repetitive workflows (e.g., onboarding, scheduling).</li>
+                                    </ul>
+                                </div>
+                                <div>
+                                    <h4 class="font-mono text-xs uppercase tracking-widest text-ui-dark font-bold mb-2">Diagnosis</h4>
+                                    <p class="text-sm text-ui-muted border-l-2 border-stone-200 pl-4">The organization relies on "Tribal Knowledge" over Information Architecture. The process lives in an employee's head, not in the system logic.</p>
+                                </div>
+                                <div>
+                                    <h4 class="font-mono text-xs uppercase tracking-widest text-ui-dark font-bold mb-2 text-emerald-700">The Treatment (Intervention)</h4>
+                                    <p class="text-sm text-ui-dark bg-stone-50 p-4 rounded-lg border border-ui-border">Extract knowledge from human operators and map it into deterministic digital workflows. Enforce validation checkpoints so tasks *cannot* proceed if data is missing.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Pattern 2 -->
+                    <div class="bg-white border border-ui-border p-8 rounded-3xl shadow-sm hover:shadow-md transition-shadow relative overflow-hidden">
+                        <div class="absolute top-0 left-0 w-2 h-full bg-brand-accent"></div>
+                        <div class="flex flex-col lg:flex-row gap-8">
+                            <div class="lg:w-1/3">
+                                <span class="font-mono text-[10px] text-ui-muted uppercase tracking-widest block mb-2">Pattern #02</span>
+                                <h3 class="text-2xl font-serif text-ui-dark mb-4">API/Environment Shock Paralysis</h3>
+                                <p class="text-xs text-emerald-700 bg-emerald-50 inline-block px-3 py-1 rounded-full border border-emerald-200 mt-4">*Successfully applied in Financial Risk automated trading (Zero unplanned data exposure).</p>
+                            </div>
+                            <div class="lg:w-2/3 space-y-6">
+                                <div>
+                                    <h4 class="font-mono text-xs uppercase tracking-widest text-ui-dark font-bold mb-2 flex items-center gap-2"><span class="text-brand-accent">↓</span> Symptoms</h4>
+                                    <ul class="list-disc list-inside text-sm text-ui-muted space-y-1 ml-4">
+                                        <li>System executes faulty transactions when 3rd party feeds go down.</li>
+                                        <li>Teams freeze or panic when operating conditions shift rapidly.</li>
+                                    </ul>
+                                </div>
+                                <div>
+                                    <h4 class="font-mono text-xs uppercase tracking-widest text-ui-dark font-bold mb-2">Diagnosis</h4>
+                                    <p class="text-sm text-ui-muted border-l-2 border-stone-200 pl-4">The system was built for the "Happy Path" only. It lacks defined decision boundaries for uncertainty.</p>
+                                </div>
+                                <div>
+                                    <h4 class="font-mono text-xs uppercase tracking-widest text-ui-dark font-bold mb-2 text-emerald-700">The Treatment (Intervention)</h4>
+                                    <p class="text-sm text-ui-dark bg-stone-50 p-4 rounded-lg border border-ui-border">Design "Fail-Safe Routing". Hardcode rules dictating exactly how the system behaves under corrupted data states (e.g., auto-halt, fallback to moving averages).</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Pattern 3 -->
+                    <div class="bg-white border border-ui-border p-8 rounded-3xl shadow-sm hover:shadow-md transition-shadow relative overflow-hidden">
+                        <div class="absolute top-0 left-0 w-2 h-full bg-brand-accent"></div>
+                        <div class="flex flex-col lg:flex-row gap-8">
+                            <div class="lg:w-1/3">
+                                <span class="font-mono text-[10px] text-ui-muted uppercase tracking-widest block mb-2">Pattern #03</span>
+                                <h3 class="text-2xl font-serif text-ui-dark mb-4">The Complexity Tax</h3>
+                                <p class="text-xs text-emerald-700 bg-emerald-50 inline-block px-3 py-1 rounded-full border border-emerald-200 mt-4">*Successfully applied coordinating 300+ remote operators during COVID-19 logistics crises.</p>
+                            </div>
+                            <div class="lg:w-2/3 space-y-6">
+                                <div>
+                                    <h4 class="font-mono text-xs uppercase tracking-widest text-ui-dark font-bold mb-2 flex items-center gap-2"><span class="text-brand-accent">↓</span> Symptoms</h4>
+                                    <ul class="list-disc list-inside text-sm text-ui-muted space-y-1 ml-4">
+                                        <li>Doubling the workforce results in a 30% drop in overall velocity.</li>
+                                        <li>Managers spend 80% of their time "coordinating" rather than building.</li>
+                                    </ul>
+                                </div>
+                                <div>
+                                    <h4 class="font-mono text-xs uppercase tracking-widest text-ui-dark font-bold mb-2">Diagnosis</h4>
+                                    <p class="text-sm text-ui-muted border-l-2 border-stone-200 pl-4">Undefined decision rights. Ambiguity causes communication lines to scale exponentially with headcount (O(N^2)), overwhelming the network.</p>
+                                </div>
+                                <div>
+                                    <h4 class="font-mono text-xs uppercase tracking-widest text-ui-dark font-bold mb-2 text-emerald-700">The Treatment (Intervention)</h4>
+                                    <p class="text-sm text-ui-dark bg-stone-50 p-4 rounded-lg border border-ui-border">Implement rigid Governance Matrices. Restrict communication channels to defined APIs/interfaces between teams. Ownership becomes absolute.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="architect" class="py-32 px-4 sm:px-8 border-b border-ui-border bg-white">
+            <div class="max-w-6xl mx-auto">
+                <div class="text-center mb-16">
+                    <p class="font-mono text-[10px] tracking-[0.3em] text-brand-accent uppercase mb-4">The Professional Matrix</p>
+                    <h2 class="text-3xl sm:text-4xl font-light text-ui-dark mb-6">Career Evolution & Timeline</h2>
+                    <p class="text-ui-muted max-w-2xl mx-auto text-sm">
+                        How my hands-on operational focus translated from rapid venture validation into high-leverage strategic system architecture.
+                    </p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+                    <!-- Timeline -->
+                    <div class="space-y-8 relative">
+                        <div class="absolute left-[15px] top-4 bottom-4 w-px bg-stone-200"></div>
+                        
+                        <div class="relative pl-12">
+                            <div class="absolute left-0 top-1 w-8 h-8 rounded-full bg-white border-4 border-brand-accent flex items-center justify-center z-10 shadow-sm"></div>
+                            <span class="font-mono text-[10px] uppercase tracking-widest text-brand-accent font-bold">PRESENT</span>
+                            <h4 class="text-lg font-bold text-ui-dark mt-1 mb-2">Systems Architect & Operational Consultant</h4>
+                            <p class="text-sm text-ui-muted leading-relaxed">Collaborate directly with fast-growing startup founders, healthcare operations, and financial structures to blueprint repeatable decision systems, structural workflows, and interface boundaries.</p>
+                        </div>
+                        
+                        <div class="relative pl-12">
+                            <div class="absolute left-0 top-1 w-8 h-8 rounded-full bg-stone-100 border-2 border-stone-300 flex items-center justify-center z-10"></div>
+                            <span class="font-mono text-[10px] uppercase tracking-widest text-ui-muted">COVID-19 NATIONAL CRISIS</span>
+                            <h4 class="text-lg font-bold text-ui-dark mt-1 mb-2">Crisis Operations Director</h4>
+                            <p class="text-sm text-ui-muted leading-relaxed">Constructed and monitored a 300+ scale remote volunteer operator grid. Structured real-time resource validation routing, mitigating data delays under extreme systemic strain.</p>
+                        </div>
+
+                        <div class="relative pl-12">
+                            <div class="absolute left-0 top-1 w-8 h-8 rounded-full bg-stone-100 border-2 border-stone-300 flex items-center justify-center z-10"></div>
+                            <span class="font-mono text-[10px] uppercase tracking-widest text-ui-muted">EARLY OPERATIONS</span>
+                            <h4 class="text-lg font-bold text-ui-dark mt-1 mb-2">Venture Builder & Co-Founder</h4>
+                            <p class="text-sm text-ui-muted leading-relaxed">Designed validation loops, operational structures, and survival pathways for high-growth ventures. Experienced the intense friction of trying to scale an organization before automating core systems.</p>
+                        </div>
+                    </div>
+
+                    <!-- Education & Technical Bridge -->
+                    <div class="space-y-8">
+                        <div class="bg-stone-50 border border-ui-border p-6 rounded-2xl">
+                            <h4 class="font-mono text-xs uppercase tracking-widest text-ui-dark font-bold mb-4 border-b border-stone-200 pb-2">Education Matrix</h4>
+                            <p class="text-sm font-bold text-ui-dark mb-2">West Bengal National University of Juridical Sciences (WBNUJS)</p>
+                            <p class="text-sm text-ui-muted leading-relaxed">Completed 5 intensive semesters of B.A. LL.B. (Honours) before stepping into real-world venture building. Foundational training in Commercial Contract Drafting, Institutional Design, and Structural Reasoning.</p>
+                        </div>
+
+                        <div class="bg-ui-dark text-white p-8 rounded-2xl shadow-lg">
+                            <h4 class="font-mono text-xs uppercase tracking-widest text-brand-100 font-bold mb-4">The Technical Translation Bridge</h4>
+                            <p class="text-sm text-stone-300 leading-relaxed mb-6 italic">
+                                "I am not a software developer, and that is precisely my advantage. I do not lose myself in syntax; I focus entirely on the core business logic, validation boundaries, and structural inputs that engineering teams require."
+                            </p>
+                            
+                            <h5 class="font-mono text-[10px] uppercase tracking-widest text-stone-400 mb-3">Areas of Direct Literacy</h5>
+                            <div class="flex flex-wrap gap-2 mb-8">
+                                <span class="px-2 py-1 rounded bg-stone-800 border border-stone-700 text-[10px] font-mono text-stone-300">API Ecosystems</span>
+                                <span class="px-2 py-1 rounded bg-stone-800 border border-stone-700 text-[10px] font-mono text-stone-300">Parameter Mapping</span>
+                                <span class="px-2 py-1 rounded bg-stone-800 border border-stone-700 text-[10px] font-mono text-stone-300">Data Schema Logic</span>
+                                <span class="px-2 py-1 rounded bg-stone-800 border border-stone-700 text-[10px] font-mono text-stone-300">Database Frameworks</span>
+                                <span class="px-2 py-1 rounded bg-stone-800 border border-stone-700 text-[10px] font-mono text-stone-300">Decision Rules</span>
+                                <span class="px-2 py-1 rounded bg-stone-800 border border-stone-700 text-[10px] font-mono text-stone-300">Deterministic Flows</span>
+                                <span class="px-2 py-1 rounded bg-stone-800 border border-stone-700 text-[10px] font-mono text-stone-300">Product Specs</span>
+                                <span class="px-2 py-1 rounded bg-brand-800 border border-brand-500 text-[10px] font-mono text-white">Alignment blueprints</span>
+                            </div>
+
+                            <h5 class="font-mono text-[10px] uppercase tracking-widest text-emerald-400 mb-3">Where I Create Maximum Structural Leverage</h5>
+                            <ul class="text-xs font-mono text-stone-300 space-y-2">
+                                <li>✓ Operating Model Architecture</li>
+                                <li>✓ Cross-Departmental Translation</li>
+                                <li>✓ Embedded System Failsafes</li>
+                                <li>✓ Relieving Founder Bottlenecks</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <footer id="connect" class="py-24 px-4 bg-ui-dark relative overflow-hidden text-white">
+            <div class="absolute inset-0 bg-grid-light opacity-5"></div>
+            
+            <div class="max-w-6xl mx-auto relative z-10">
+                <div class="text-center mb-16 max-w-3xl mx-auto">
+                    <p class="font-mono text-[10px] tracking-[0.3em] text-brand-500 uppercase mb-4">Let's Connect</p>
+                    <h2 class="font-serif text-4xl sm:text-5xl mb-6">Let's build a system that outlasts your daily supervision.</h2>
+                    <p class="text-stone-400 text-lg">
+                        Whether you are navigating clinical growth leaks, financial API volatility, or are simply tired of being the permanent bottleneck for every execution decision in your business. Let's engineer a predictable engine.
+                    </p>
+                </div>
+
+                <!-- Interactive Contact Blocks -->
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-20">
+                    
+                    <!-- LinkedIn -->
+                    <a href="https://linkedin.com/in/alapanporel" target="_blank" class="group block p-6 rounded-2xl bg-stone-900 border border-stone-800 hover:border-brand-500 hover:bg-stone-800/80 transition-all">
+                        <div class="text-2xl mb-4 text-[#0A66C2]">in</div>
+                        <h4 class="font-mono text-xs uppercase tracking-widest text-stone-300 mb-1">Professional Profile</h4>
+                        <h3 class="text-xl font-bold mb-4">LinkedIn</h3>
+                        <p class="text-sm text-stone-500 group-hover:text-stone-300 transition-colors flex items-center gap-2">
+                            Connect & view network recommendations. ➔
+                        </p>
+                    </a>
+
+                    <!-- WhatsApp -->
+                    <a href="https://wa.me/919083919523" target="_blank" class="group block p-6 rounded-2xl bg-stone-900 border border-stone-800 hover:border-[#25D366] hover:bg-stone-800/80 transition-all">
+                        <div class="text-2xl mb-4 text-[#25D366]">💬</div>
+                        <h4 class="font-mono text-xs uppercase tracking-widest text-stone-300 mb-1">Immediate Thread</h4>
+                        <h3 class="text-xl font-bold mb-4">WhatsApp Chat</h3>
+                        <p class="text-sm text-stone-500 group-hover:text-stone-300 transition-colors flex items-center gap-2">
+                            Initiate operational diagnostics. ➔
+                        </p>
+                    </a>
+
+                    <!-- Email -->
+                    <a href="mailto:alapanporell@gmail.com" class="group block p-6 rounded-2xl bg-stone-900 border border-stone-800 hover:border-brand-500 hover:bg-stone-800/80 transition-all">
+                        <div class="text-2xl mb-4 text-brand-500">✉</div>
+                        <h4 class="font-mono text-xs uppercase tracking-widest text-stone-300 mb-1">Structured Proposal</h4>
+                        <h3 class="text-xl font-bold mb-4">Email Directly</h3>
+                        <p class="text-sm text-stone-500 group-hover:text-stone-300 transition-colors flex items-center gap-2">
+                            alapanporell@gmail.com ➔
+                        </p>
+                    </a>
+
+                    <!-- Phone -->
+                    <a href="tel:+919083919523" class="group block p-6 rounded-2xl bg-stone-900 border border-stone-800 hover:border-brand-500 hover:bg-stone-800/80 transition-all">
+                        <div class="text-2xl mb-4 text-brand-500">📞</div>
+                        <h4 class="font-mono text-xs uppercase tracking-widest text-stone-300 mb-1">Phone Contact</h4>
+                        <h3 class="text-xl font-bold mb-4">Call Now</h3>
+                        <p class="text-sm text-stone-500 group-hover:text-stone-300 transition-colors flex items-center gap-2">
+                            +91 90839 19523 ➔
+                        </p>
+                    </a>
+
+                </div>
+
+                <div class="text-center pt-8 border-t border-stone-800">
+                    <p class="font-mono text-[12px] tracking-[0.3em] text-stone-500 uppercase">ALAPAN POREL</p>
+                </div>
+            </div>
+        </footer>
+    </main>
+
+    <script>
+        // --- 1. Spotlight Effect (Light Theme Adjustments) ---
+        document.getElementById('main-content').addEventListener("mousemove", e => {
+            for (const wrapper of document.querySelectorAll(".spotlight-wrapper")) {
+                const rect = wrapper.getBoundingClientRect(),
+                      x = e.clientX - rect.left,
+                      y = e.clientY - rect.top;
+                
+                wrapper.style.setProperty("--mouse-x", `${x}px`);
+                wrapper.style.setProperty("--mouse-y", `${y}px`);
+            }
+        });
+
+        // --- 2. Diagnostic Engine Logic ---
+        function startDiagnostic() {
+            document.getElementById('hero').style.display = 'none';
+            document.getElementById('diagnostic-engine').style.display = 'flex';
+            document.getElementById('main-content').style.display = 'none';
+            window.scrollTo(0,0);
+        }
+
+        function nextStep(stepNum) {
+            document.querySelectorAll('.step').forEach(el => el.classList.remove('active'));
+            document.getElementById(`step-${stepNum}`).classList.add('active');
+        }
+
+        function runMRI() {
+            document.querySelectorAll('.step').forEach(el => el.classList.remove('active'));
+            document.getElementById('step-loading').classList.add('active');
+            
+            setTimeout(() => {
+                document.getElementById('step-loading').classList.remove('active');
+                document.getElementById('step-mri').classList.add('active');
+                
+                // Animate MRI Bars
+                setTimeout(() => {
+                    document.querySelectorAll('.mri-bar-fill').forEach(bar => {
+                        bar.style.width = bar.getAttribute('data-width');
+                    });
+                }, 100);
+            }, 2000);
+        }
+
+        function closeDiagnostic() {
+            document.getElementById('diagnostic-engine').style.display = 'none';
+            const main = document.getElementById('main-content');
+            main.style.display = 'block';
+            window.scrollTo({ top: document.getElementById('transformations').offsetTop, behavior: 'smooth' });
+        }
+
+        // --- 3. Alignment Matrix Tabs ---
+        const tabData = {
+            'business': {
+                icon: '💼', title: 'BUSINESS INCENTIVES', 
+                text: "Managing scale, operational cost indexes, and long-term capital efficiency structures. I translate core revenue blueprints into systemic workflows that don't depend on individual heroics.",
+                tags: ['Blueprint', 'Strategy']
+            },
+            'operations': {
+                icon: '⚙️', title: 'OPERATIONAL WORKFLOWS', 
+                text: "Designing absolute ownership rules and deterministic execution paths. I eliminate the ambiguity that forces managers to coordinate rather than build, turning tribal knowledge into system architecture.",
+                tags: ['Ownership', 'Execution']
+            },
+            'engineering': {
+                icon: '💻', title: 'ENGINEERING INTERFACES', 
+                text: "Translating business requirements into strict data models and APIs. I define the fail-safes and boundary conditions so developers can build securely without second-guessing commercial logic.",
+                tags: ['Data Models', 'APIs']
+            },
+            'finance': {
+                icon: '📊', title: 'FINANCIAL RISK CONTROL', 
+                text: "Embedding financial constraints and risk boundaries directly into the operating system. Ensuring rapid operational growth never outpaces the systemic ability to monitor capital allocation.",
+                tags: ['Risk', 'Control']
+            },
+            'law': {
+                icon: '⚖️', title: 'LEGAL & COMPLIANCE', 
+                text: "Treating regulatory parameters not as external roadblocks, but as core operating constraints. I hardcode compliance steps into the digital workflow, making violations structurally impossible.",
+                tags: ['Governance', 'Rules']
+            }
+        };
+
+        function switchTab(tabId) {
+            // Update buttons
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.className = "tab-btn px-4 py-2 rounded-full font-mono text-xs uppercase tracking-wider border border-ui-border text-ui-muted hover:bg-stone-100 transition-all";
+            });
+            const activeBtn = document.getElementById(`tab-${tabId}`);
+            activeBtn.className = "tab-btn px-4 py-2 rounded-full font-mono text-xs uppercase tracking-wider bg-ui-dark text-white transition-all shadow-sm";
+
+            // Update content
+            const content = document.getElementById('tab-content');
+            const data = tabData[tabId];
+            
+            // Remove animation to re-trigger
+            content.classList.remove('animate-fade-in');
+            void content.offsetWidth; // trigger reflow
+            
+            content.innerHTML = `
+                <div class="text-4xl mb-4">${data.icon}</div>
+                <h3 class="font-mono text-sm tracking-widest text-brand-accent uppercase mb-4 font-bold">${data.title}</h3>
+                <p class="text-ui-dark leading-relaxed max-w-2xl mb-6">${data.text}</p>
+                <div class="inline-flex items-center gap-3 px-4 py-2 rounded bg-stone-100 border border-ui-border font-mono text-[10px] uppercase tracking-widest text-ui-dark">
+                    <span>${data.tags[0]}</span>
+                    <svg class="w-3 h-3 text-brand-accent" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+                    <span>${data.tags[1]}</span>
+                </div>
+            `;
+            content.classList.add('animate-fade-in');
+        }
+
+        // --- 4. Before/After Engine ---
+        function toggleStructure(state) {
+            const btnBefore = document.getElementById('btn-before');
+            const btnAfter = document.getElementById('btn-after');
+            const stateBefore = document.getElementById('state-before');
+            const stateAfter = document.getElementById('state-after');
+
+            if(state === 'before') {
+                btnBefore.className = "px-6 py-2 rounded-full text-xs font-mono uppercase tracking-widest bg-ui-dark text-white transition-all shadow-md";
+                btnAfter.className = "px-6 py-2 rounded-full text-xs font-mono uppercase tracking-widest text-ui-muted hover:text-ui-dark transition-all";
+                stateBefore.style.opacity = '1';
+                stateBefore.style.pointerEvents = 'auto';
+                stateAfter.style.opacity = '0';
+                stateAfter.style.pointerEvents = 'none';
+            } else {
+                btnAfter.className = "px-6 py-2 rounded-full text-xs font-mono uppercase tracking-widest bg-emerald-600 text-white transition-all shadow-md border border-emerald-500";
+                btnBefore.className = "px-6 py-2 rounded-full text-xs font-mono uppercase tracking-widest text-ui-muted hover:text-ui-dark transition-all";
+                stateBefore.style.opacity = '0';
+                stateBefore.style.pointerEvents = 'none';
+                stateAfter.style.opacity = '1';
+                stateAfter.style.pointerEvents = 'auto';
+            }
+        }
+
+        // --- 5. Complexity Tax Visualizer (Network Logic Fix for exact alignment) ---
+        const slider = document.getElementById('node-slider');
+        const nodeDisplay = document.getElementById('node-count-display');
+        const pathDisplay = document.getElementById('path-count-display');
+        const svg = document.getElementById('network-viz');
+        const nodesContainer = document.getElementById('nodes-container');
+        const wrapper = document.getElementById('network-container');
+
+        function drawNetwork() {
+            let n = parseInt(slider.value);
+            svg.innerHTML = '';
+            nodesContainer.innerHTML = '';
+            
+            const paths = (n * (n - 1)) / 2;
+            nodeDisplay.innerText = n;
+            pathDisplay.innerText = paths;
+            
+            if(n > 10) pathDisplay.className = "text-red-600 font-bold";
+            else if(n > 6) pathDisplay.className = "text-orange-500 font-bold";
+            else pathDisplay.className = "text-ui-dark font-bold";
+
+            // Using BoundingClientRect for precise internal sizing
+            const rect = wrapper.getBoundingClientRect();
+            const width = rect.width || 300; 
+            const height = rect.height || 300;
+            const radius = Math.min(width, height) / 2 - 40; // padding
+            const cx = width / 2;
+            const cy = height / 2;
+
+            const coords = [];
+            for(let i = 0; i < n; i++) {
+                const angle = (i * 2 * Math.PI) / n - Math.PI/2;
+                const x = cx + radius * Math.cos(angle);
+                const y = cy + radius * Math.sin(angle);
+                coords.push({x, y});
+
+                // Draw HTML node absolutely positioned inside container
+                const node = document.createElement('div');
+                node.className = 'absolute w-4 h-4 bg-brand-accent rounded-full -translate-x-1/2 -translate-y-1/2 shadow-sm border-2 border-white transition-all duration-300';
+                node.style.left = `${x}px`;
+                node.style.top = `${y}px`;
+                nodesContainer.appendChild(node);
+            }
+
+            // Draw lines
+            let chaosColor = n > 10 ? 'rgba(220, 38, 38, 0.4)' : (n > 6 ? 'rgba(249, 115, 22, 0.4)' : 'rgba(168, 162, 158, 0.4)');
+            
+            for(let i=0; i<n; i++) {
+                for(let j=i+1; j<n; j++) {
+                    const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+                    line.setAttribute('x1', coords[i].x);
+                    line.setAttribute('y1', coords[i].y);
+                    line.setAttribute('x2', coords[j].x);
+                    line.setAttribute('y2', coords[j].y);
+                    line.style.stroke = chaosColor;
+                    svg.appendChild(line);
+                }
+            }
+        }
+
+        // Init network and handle resize using ResizeObserver for precise alignment
+        slider.addEventListener('input', drawNetwork);
+        
+        const resizeObserver = new ResizeObserver(() => {
+            // Need a slight delay to allow layout to settle
+            requestAnimationFrame(drawNetwork);
+        });
+        resizeObserver.observe(wrapper);
+        
+        // Initial draw
+        setTimeout(drawNetwork, 100);
+
+    </script>
+</body>
+</html>
